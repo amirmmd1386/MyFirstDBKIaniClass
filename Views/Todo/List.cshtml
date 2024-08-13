@@ -1,32 +1,27 @@
 ﻿@model List<Todo>
 <h1>Todo List</h1>
-<div class="d-flex justify-content-between">
-	<form asp-action="list" method="post">
-		<input type="text">
-		<a asp-action="AddEditTodo" asp-controller="Todo">Add</a>
-	</form>
-</div>
-<div class="d-flex flex-column gap-3">
+
+<div class="d-flex flex-column gap-3 mb-4" id="todoList">
 
 	@foreach (var todo in Model)
 	{
-		<div class="d-flex justify-content-between   border border-3  px-3 " style="border-left:5px solid @(todo.Level == "middle"?"yellow":todo.Level == "easy"?"green":todo.Level == "hard"?"red":"") !important; border-radius:10px;">
+		<div class=" d-flex justify-content-between   border border-3  px-3 " id="todo-@todo.Id" style="border-left:5px solid @(todo.Level == "middle"?"yellow":todo.Level == "easy"?"green":todo.Level == "hard"?"red":"") !important; border-radius:10px;">
 			<div>
 				<div class="d-flex align-items-center ">
-					<a class="h4 me-2 text-decoration-none text-black " href="">@(todo.Title)</a>
+					<a class="h4 me-2 text-decoration-none text-black " asp-action="Detail" asp-route-id="@(todo.Id)">@(todo.Title)</a>
 					<span class="badge bg-info text-dark">@(todo.StickyNote)</span>
 				</div>
 				<small class="text-muted ">@(todo.Time)</small>
 			</div>
 
 			<div class="d-flex align-items-center justify-content-center gap-2">
-				<span>@(todo.Completed ? "✔" : "❌")</span>
+				<a asp-action="EditTodo" class="text-decoration-none" asp-route-idCom="@(todo.Id)">@(todo.Completed ? "✔" : "❌")</a>
 				<div class="dropdown ">
 					<button class="bg-transparent border-0" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
 						💼
 					</button>
 					<ul class="dropdown-menu dropstart" aria-labelledby="dropdownMenuButton1">
-						<li><a class="dropdown-item" role="button" onclick="del(@todo.Id)">DELETE</a></li>
+						<li><a class="dropdown-item" role="button" onclick="deleteTodoItem(@todo.Id)">DELETE</a></li>
 						<li><a class="dropdown-item" asp-action="EditTodo" asp-route-id="@(todo.Id)">EDIT</a></li>
 					</ul>
 				</div>
@@ -36,10 +31,35 @@
 
 </div>
 
-	<script>
-		let del = (id) => {
-			if (confirm("Do you want to del the row?" + id)) {
-				window.location.replace(`/Todo/Remove?id=${id}`)
-			}
+<div class="fixed-bottom container-fluid m-0 p-2 d-flex justify-content-around align-items-center border-top box-shadow">
+	<form method="post" asp-action="List">
+		<div class="col-sm-10">
+			<input id="searchInput" name="search" onkeydown="search()" class="form-control border border-secondary" placeholder="Enter title">
+		</div>
+	</form>	
+	<a asp-action="AddEditTodo" asp-controller="Todo" class="btn btn-lg btn-outline-secondary">Add</a>
+</div>
+<nav aria-label="Page navigation example ">
+	<ul class="pagination justify-content-between">
+		@{
+			int pageNum = (int)ViewData["pagenumber"];
+			int totalPages = (int)ViewData["count"] / 5;
+			string disPrev = pageNum <= 0 ? "disabled" : "";
+			string disNext = pageNum >= totalPages ? "disabled" : "";
 		}
-	</script>
+		<li class="page-item @disPrev">
+			<a class="page-link text-black" href="/Todo/List?pagenumber=@(pageNum - 1)" aria-label="Previous" style="font-size: 1.5em;">
+				<span aria-hidden="true">« Previous</span>
+			</a>
+		</li>
+		<li class="page-item @disNext">
+			<a class="page-link text-black" href="/Todo/List?pagenumber=@(pageNum + 1)" aria-label="Next" style="font-size: 1.5em;">
+				<span aria-hidden="true">Next »</span>
+			</a>
+		</li>
+	</ul>
+</nav>
+
+
+<script src="~/js/site.js"></script>
+

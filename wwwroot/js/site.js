@@ -1,4 +1,17 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿
 
-// Write your JavaScript code.
+let deleteTodoItem = (id) => {
+    if (confirm("Do you want to delete the row with ID: " + id + "?")) {
+        $.ajax({
+            url: `/Todo/Remove?id=${id}`,
+            type: 'GET',
+            success: function (result) {
+
+                $(`#todo-${id}`).remove();
+            },
+            error: function (err) {
+                alert("Error deleting item");
+            }
+        });
+    }
+}

@@ -1,0 +1,62 @@
+﻿@model Todo
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card border-secondary border-3 shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="card-title" style="font-size: 24px;">Detail Page</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="Id" class="font-weight-bold text-secondary" style="font-size: 18px;">Id:</label>
+                            <p id="Id" class="text-muted" style="font-size: 16px;">@Model.Id</p>
+                            <div class="border-bottom border-secondary mb-2"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Title" class="font-weight-bold text-secondary" style="font-size: 18px;">Title:</label>
+                            <p id="Title" class="text-primary font-italic" style="font-size: 16px;">@Model.Title</p>
+                            <div class="border-bottom border-secondary mb-2"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="Description" class="font-weight-bold text-secondary" style="font-size: 18px;">Description:</label>
+                            <p id="Description" class="text-justify text-wrap" style="font-size: 16px;">@Model.Description</p>
+                            <div class="border-bottom border-secondary mb-2"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Author" class="font-weight-bold text-secondary" style="font-size: 18px;">Author:</label>
+                            <p id="Author" class="text-info font-italic" style="font-size: 16px;">@Model.Author</p>
+                            <div class="border-bottom border-secondary mb-2"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="Level" class="font-weight-bold text-secondary" style="font-size: 18px;">Level:</label>
+                            <p id="Level" class="text-warning font-weight-bold" style="font-size: 16px;">@Model.Level</p>
+                            <div class="border-bottom border-secondary mb-2"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="StickyNote" class="font-weight-bold text-secondary" style="font-size: 18px;">Sticky Note:</label>
+                            <p id="StickyNote" class="text-success font-italic" style="font-size: 16px;">@Model.StickyNote</p>
+                            <div class="border-bottom border-secondary mb-2"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="Time" class="font-weight-bold text-secondary" style="font-size: 18px;">Time:</label>
+                            <p id="Time" class="text-muted" style="font-size: 16px;">@Model.Time</p>
+                            <div class="border-bottom border-secondary mb-2"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Completed" class="font-weight-bold text-secondary" style="font-size: 18px;">Completed:</label>
+                            <p id="Completed" class="text-danger font-weight-bold" style="font-size: 16px;">@Model.Completed</p>
+                            <div class="border-bottom border-secondary mb-2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
