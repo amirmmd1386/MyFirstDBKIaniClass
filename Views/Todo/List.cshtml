@@ -1,4 +1,4 @@
-﻿@model List<Todo>
+﻿@model List<NewTodo>
 <h1>Todo List</h1>
 
 <div class="d-flex flex-column gap-3 mb-4" id="todoList">
@@ -34,7 +34,7 @@
 <div class="fixed-bottom container-fluid m-0 p-2 d-flex justify-content-around align-items-center border-top box-shadow">
 	<form method="post" asp-action="List">
 		<div class="col-sm-10">
-			<input id="searchInput" name="search" onkeydown="search()" class="form-control border border-secondary" placeholder="Enter title">
+			<input id="searchInput" name="search" class="form-control border border-secondary" placeholder="Enter title">
 		</div>
 	</form>	
 	<a asp-action="AddEditTodo" asp-controller="Todo" class="btn btn-lg btn-outline-secondary">Add</a>

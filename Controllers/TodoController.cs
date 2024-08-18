@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyFirstDBKIaniClass.core;
 using MyFirstDBKIaniClass.Data;
 using MyFirstDBKIaniClass.Entities;
+using MyFirstDBKIaniClass.Models;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
@@ -16,34 +18,36 @@ namespace MyFirstDBKIaniClass.Controllers
 		{
 			this.db = db;
 		}
-        [HttpGet]
-        public IActionResult Detail(int id)
-        {
-            var model = db.Todos.FirstOrDefault(t => t.Id == id);
-            return View(model);
-        }
-        public ActionResult Index() => RedirectToAction(nameof(List));
+
+		[HttpGet]
+		public IActionResult Detail(int id)
+		{
+			var model = db.Todos.FirstOrDefault(t => t.Id == id);
+			return View(model);
+		}
+
+		public ActionResult Index() => RedirectToAction(nameof(List));
+
 		[HttpGet]
 		public IActionResult List(int pagenumber = 0)
 		{
-			var skip = pagenumber * 5;
+			var model = db.Todos.ToList();
 			ViewData["pagenumber"] = pagenumber;
-			List<Todo> todos = db.Todos.OrderByDescending(t=> t.Id).Skip(skip).Take(5).ToList();
-			ViewData["count"] = todos.Count;
-			return View(todos);
+			ViewData["count"] = model.Count;
+			return View(model.ToModel(pagenumber));
 		}
-		[HttpPost]
-		public IActionResult List(string search = "",int pageNumber = 0)
-		{
-            ViewData["pagenumber"] = pageNumber;
-            List<Todo> todos;
-				todos = db.Todos.Where(s => s.Title.Contains(search)).OrderByDescending(t => t.Id).Skip(pageNumber * 5).Take(5).ToList();
-				todos = todos.Count > 0 ? todos : db.Todos.OrderByDescending(t => t.Id).Skip(pageNumber * 5).Take(5).ToList();
-            ViewData["count"] = todos.Count;
 
-            return View(todos);
+		[HttpPost]
+		public IActionResult List(string search = "", int pageNumber = 0)
+		{
+			var model = db.Todos.ToList();
+			ViewData["pagenumber"] = pageNumber;
+
+			ViewData["count"] = model.Count;
+
+			return View(model.Search(search, pageNumber));
 		}
-		
+
 		public IActionResult Remove(int? id)
 		{
 			var delRow = db.Todos.FirstOrDefault(x => x.Id == id);
@@ -53,7 +57,7 @@ namespace MyFirstDBKIaniClass.Controllers
 		}
 
 		[HttpGet]
-		public IActionResult EditTodo(int? idCom ,int? id = null)
+		public IActionResult EditTodo(int? idCom, int? id = null)
 		{
 			if (id != null)
 			{
@@ -87,16 +91,19 @@ namespace MyFirstDBKIaniClass.Controllers
 			}
 			return RedirectToAction(nameof(List));
 		}
+
 		[HttpGet]
 		public IActionResult AddEditTodo()
 		{
 
 			return View();
 		}
+
 		[HttpPost]
-		public IActionResult AddEditTodo(Todo model)
+		public IActionResult AddEditTodo(NewTodo model)
 		{
-			db.Todos.Add(model);
+			var m = db.Todos;
+			m.Add(TodoFunc.AddModel(model));
 			db.SaveChanges();
 			return RedirectToAction(nameof(List));
 		}
